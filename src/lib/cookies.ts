@@ -38,7 +38,8 @@ export function parseCookies(header: string): Record<string, string> {
   return jar
 }
 
-const basePath = () => (typeof import.meta !== 'undefined' && import.meta.env?.BASE_URL) || '/'
+/** The folder the site is served from ("/" or "/utilities/"), so a cookie is only sent to this site's own paths. */
+const basePath = () => (typeof location !== 'undefined' ? location.pathname.replace(/[^/]*$/, '') || '/' : '/')
 
 export function readCookie(name: string): string | undefined {
   if (typeof document === 'undefined') return undefined

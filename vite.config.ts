@@ -34,8 +34,9 @@ function csp(): Plugin {
 
 // https://vite.dev/config/
 export default defineConfig({
-  // GitHub Pages serves a project site from /<repo>/. The deploy workflow sets BASE_PATH.
-  base: process.env.BASE_PATH ?? '/',
+  // Relative, so the same build works at the site root (utilities.keston.co) and under /utilities/
+  // (thekestongroup.github.io/utilities). Routing uses the hash, so there are no other paths to get wrong.
+  base: './',
   plugins: [vue(), tailwindcss(), csp()],
   worker: { format: 'es' },
   build: {
