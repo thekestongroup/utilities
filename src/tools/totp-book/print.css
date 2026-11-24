@@ -1,0 +1,318 @@
+/*
+ * The book. Hidden on screen (unless previewing) and the only thing shown
+ * when printing. Each sheet is exactly one page, with its own footer, so page
+ * numbers and breaks don't depend on the browser's header/footer support.
+ * Colours come from Keston UI's tokens; dark mode is screen-only so the book
+ * always prints on white.
+ */
+.book {
+  display: none;
+  /* Paper is pure white and everything on it pure black, even when the page is in dark mode: no greys, so no halftone dots on a printer. */
+  color-scheme: light;
+  --color-white: #fff;
+  --color-black: #000;
+  color: var(--color-black);
+  font-family: var(--font-sans);
+  --sheet-w: 210mm;
+  --sheet-h: 295.5mm;
+  --pad-x: 9mm;
+  --punch: 11mm; /* keep in step with PUNCH_MM in lib/book.ts */
+  --pad-y: 8mm;
+}
+
+.sheet {
+  position: relative;
+  box-sizing: border-box;
+  width: var(--sheet-w);
+  height: var(--sheet-h);
+  --pad-l: var(--pad-x);
+  --pad-r: var(--pad-x);
+  padding: var(--pad-y) var(--pad-r) calc(var(--pad-y) + 5mm) var(--pad-l);
+  overflow: hidden;
+  background: #fff;
+  break-after: page;
+  break-inside: avoid;
+  display: flex;
+  flex-direction: column;
+}
+.sheet--punch-left {
+  --pad-l: calc(var(--pad-x) + var(--punch));
+}
+.sheet--punch-right {
+  --pad-r: calc(var(--pad-x) + var(--punch));
+}
+.sheet:last-child {
+  break-after: auto;
+}
+
+.sheet {
+  page: a4;
+}
+
+.book .head {
+  border-bottom: 0.5mm solid var(--color-black);
+  padding-bottom: 2.5mm;
+  margin-bottom: 4mm;
+}
+.book .meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 4mm;
+  font-size: 8.5pt;
+  margin: 0 0 1.5mm;
+}
+.book h2 {
+  margin: 0;
+  font-size: 17pt;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.book .dst {
+  margin: 0 0 4mm;
+  padding: 2mm 3mm;
+  border-left: 1mm solid var(--color-black);
+  border-top: 0.2pt solid var(--color-black);
+  border-right: 0.2pt solid var(--color-black);
+  border-bottom: 0.2pt solid var(--color-black);
+  font-size: 9pt;
+  line-height: 1.35;
+}
+
+.book .codes {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-feature-settings: 'zero' 1;
+  font-variant-numeric: slashed-zero;
+  /* Even spacing at tiny sizes: no hinting-rounded advances, no kerning or ligatures. */
+  text-rendering: geometricPrecision;
+  font-kerning: none;
+  font-variant-ligatures: none;
+  -webkit-font-smoothing: antialiased;
+  font-size: var(--fs);
+  line-height: var(--lh);
+  white-space: pre;
+  column-count: var(--cols);
+  column-gap: var(--gap, 8px);
+  column-fill: auto;
+  height: calc(var(--rows) * var(--lh) + 1pt);
+}
+
+.book .foot {
+  position: absolute;
+  left: var(--pad-l);
+  right: var(--pad-r);
+  bottom: calc(var(--pad-y) - 2mm);
+  margin: 0;
+  padding-top: 2mm;
+  border-top: 0.2mm solid var(--color-black);
+  font-size: 8.5pt;
+  text-align: center;
+}
+
+/* Title page */
+.sheet--title {
+  justify-content: center;
+  gap: 3mm;
+}
+.sheet--title .eyebrow {
+  margin: 0;
+  font-size: 10pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-black);
+  font-weight: 700;
+}
+.sheet--title h1 {
+  margin: 0;
+  font-size: 34pt;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.sheet--title .range {
+  margin: 0;
+  font-size: 18pt;
+}
+.sheet--title .zone {
+  margin: 0 0 8mm;
+  font-size: 11pt;
+}
+.sheet--title .facts {
+  margin: 0 0 8mm;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3mm 8mm;
+  border-top: 0.5mm solid var(--color-black);
+  padding-top: 5mm;
+}
+.sheet--title .facts dt {
+  font-size: 8.5pt;
+}
+.sheet--title .facts dd {
+  margin: 0;
+  font-size: 12pt;
+  font-weight: 700;
+}
+.sheet--title .note {
+  font-size: 10.5pt;
+  line-height: 1.5;
+}
+.sheet--title .note p {
+  margin: 0 0 3mm;
+}
+
+/* Index */
+.book .index {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 1;
+  font-size: 11pt;
+}
+.book .index li {
+  display: flex;
+  align-items: baseline;
+  gap: 2mm;
+  padding: 0.9mm 0;
+}
+.book .index .dots {
+  flex: 1;
+  border-bottom: 0.3mm dotted var(--color-black);
+}
+
+/* On screen: a scaled-down preview of the first pages. */
+.book--preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6mm;
+  align-items: flex-start;
+}
+.book--preview .sheet {
+  border: 1px solid rgb(0 0 0 / 0.2);
+  box-shadow: 0 1px 6px rgb(0 0 0 / 0.25);
+  flex: none;
+}
+@media screen {
+  /* Shown at actual size: scaling it down would put rows on fractions of a pixel, which looks uneven. */
+  .book--preview {
+    width: max-content;
+  }
+}
+
+@media print {
+  /*
+   * Printing lays text out slightly lower in its line than the screen draws it, and snaps boxes to
+   * whole pixels, so the hour boxes are placed again for print: at the line's corner, then moved
+   * with a transform (which isn't snapped) to centre them on the digits.
+   */
+  body > .book .codes b::before {
+    left: 0;
+    top: 0;
+    width: calc((100% + 0em) / var(--hair));
+    transform: translate(0em, -0.048em) scale(var(--hair));
+  }
+  body > .book[data-edition='day'] .codes b::before {
+    width: calc((100% + 0em) / var(--hair));
+    transform: translate(0.224em, 0.269em) scale(var(--hair));
+  }
+}
+
+@media print {
+  @page a4 {
+    size: A4;
+    margin: 0;
+  }
+  html,
+  body {
+    background: #fff !important;
+    margin: 0;
+  }
+  body > :not(.book) {
+    display: none !important;
+  }
+  .book {
+    display: block;
+  }
+  .book--preview {
+    display: block;
+    width: auto;
+    transform: none;
+  }
+  .book--preview .sheet,
+  .sheet {
+    border: 0;
+    box-shadow: none;
+    /* No background fill at all: the paper is the white. */
+    background: none;
+  }
+}
+
+/*
+ * Each hour's first code is bold and outlined. Blocks, so they can start a line; orphans and widows are
+ * off so columns still break exactly where the layout counted.
+ */
+.book .codes span,
+.book .codes b {
+  display: block;
+  orphans: 1;
+  widows: 1;
+  font-weight: inherit;
+}
+.book .codes b {
+  font-weight: 700;
+}
+/* At whole-day size a bold, slashed zero fills in and reads as an 8, so those lines stay regular weight and rely on the box. */
+.book[data-edition='day'] .codes b {
+  font-weight: 400;
+}
+/*
+ * A box the same colour and weight as the column rules, evenly spaced around the
+ * digits (a little wider than the text, since the type is flush with its box).
+ * Drawn by a pseudo-element, so it takes no space and nothing moves.
+ */
+.book .codes b {
+  position: relative;
+  width: max-content;
+}
+
+/*
+ * Hairlines. Browsers round borders up to a whole pixel (0.75pt), which is far
+ * too heavy here, so lines are drawn as 1px borders and scaled down: the
+ * transform isn't pixel-snapped, so they print at 1px x --hair (about 0.2pt).
+ */
+.book {
+  --hair: 0.27;
+}
+.book .codes-wrap {
+  position: relative;
+  width: var(--w);
+}
+.book .vr {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--k) * (100% + var(--gap)) / var(--cols) - var(--gap) / 2);
+  /* A border, not a background: browsers skip backgrounds unless "Background graphics" is ticked. */
+  width: 0;
+  border-left: 1px solid var(--color-black);
+  transform: scaleX(var(--hair));
+  transform-origin: 0 0;
+}
+.book .codes b::before {
+  content: '';
+  position: absolute;
+  left: -0.125em;
+  top: -0.065em;
+  width: calc((100% + 0.25em) / var(--hair));
+  height: calc(100% / var(--hair));
+  border: 1px solid var(--color-black);
+  transform: scale(var(--hair));
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+/* Whole days: tiny type that sits higher in its line, so the box is lifted to stay centred on the digits. */
+.book[data-edition='day'] .codes b::before {
+  left: -0.12em;
+  top: -0.14em;
+  width: calc((100% + 0.2em) / var(--hair));
+}
