@@ -54,7 +54,7 @@ pnpm install
 pnpm dev        # http://localhost:5173
 pnpm test       # RFC 6238 vectors, base32, otpauth://, time zones, DST, URL state
 pnpm typecheck
-pnpm build      # BASE_PATH=/<repo>/ for GitHub Pages
+pnpm build      # relative paths: works at the site root and under /utilities/
 ```
 
 ### Adding a tool
@@ -72,6 +72,8 @@ never reach a server.
 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) runs type checks and tests on every
 push and pull request, and deploys to GitHub Pages on pushes to `main`. In the repository settings,
 set **Pages → Source** to **GitHub Actions** once.
+
+The site is served at https://utilities.keston.co (the custom domain is set in the repository's Pages settings, with a `CNAME` DNS record for `utilities` pointing at `thekestongroup.github.io`, and [`public/CNAME`](public/CNAME) records it in the build). It also still answers at https://thekestongroup.github.io/utilities/ until the custom domain is switched on, because the build uses relative paths.
 
 ## Third-party material
 

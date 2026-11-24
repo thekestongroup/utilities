@@ -26,11 +26,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
       - run: pnpm test
-      - name: Build
-        # GitHub Pages serves a project site from /<repo>/.
-        run: pnpm build
-        env:
-          BASE_PATH: /${{ github.event.repository.name }}/
+      - run: pnpm build
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
