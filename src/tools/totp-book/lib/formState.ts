@@ -59,8 +59,12 @@ export function queryToForm(query: Query, defaults: { today: string; zone: strin
 
   let duration: Duration = '1'
   const endParam = first(query.end)
+  const monthsParam = first(query.months)
   if (endParam && parseDate(endParam)) {
     duration = PRESET_MONTHS.find((m) => addMonths(validStart, Number(m)) === endParam) ?? '1'
+  } else if (PRESET_MONTHS.includes(monthsParam as Duration)) {
+    // From saved defaults, which keep the length but not a start date.
+    duration = monthsParam as Duration
   }
 
   const algorithm = first(query.algo)

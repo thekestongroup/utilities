@@ -13,9 +13,16 @@ const sections = computed(() => [
   },
   {
     label: 'Tools',
-    items: tools.map(
-      (tool): SidebarItem => ({ label: tool.title, icon: tool.icon, to: tool.path, active: route.path.startsWith(tool.path) })
-    )
+    items: tools.map((tool): SidebarItem => {
+      if (tool.pages) {
+        return {
+          label: tool.title,
+          icon: tool.icon,
+          children: tool.pages.map((page) => ({ label: page.title, icon: page.icon, to: page.path, active: route.path === page.path }))
+        }
+      }
+      return { label: tool.title, icon: tool.icon, to: tool.path, active: route.path === tool.path }
+    })
   }
 ])
 </script>

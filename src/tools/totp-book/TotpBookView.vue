@@ -16,6 +16,8 @@ import {
   Switch
 } from '@thekestongroup/ui'
 import { Copy, Eraser, Printer, SkipForward, Eye } from '@lucide/vue'
+import DefaultsBar from '../../components/DefaultsBar.vue'
+import { loadDefaults, withDefaults, type Options } from '../../lib/defaults'
 import PrintBook from './PrintBook.vue'
 import type { GenerateMessage, GenerateRequest } from './generate.worker'
 import { decodeBase32, validateBase32 } from './lib/base32'
@@ -32,7 +34,10 @@ const NUMBER = { format: (n: number) => numberFormat.format(n) }
 
 // ── Settings (kept in the URL) ──────────────────────────────────────────────
 const defaults = { today: todayIn(browserZone()), zone: browserZone() }
-const state = reactive<FormState>(queryToForm(route.query, defaults))
+// The options that may be saved as defaults: never the setup key or the label, which belong to one account.
+const SAVEABLE = ['tz', 'months', 'edition', 'punch'] as const
+const savedQuery = () => withDefaults(route.query, loadDefaults('totp-book', SAVEABLE))
+const state = reactive<FormState>(queryToForm(savedQuery(), defaults))
 
 const zones = allZones()
 const durationOptions = [
@@ -350,7 +355,7 @@ watch(
   () => route.fullPath,
   () => {
     if (route.name !== 'totp-book') return
-    const incoming = queryToForm(route.query, defaults)
+    const incoming = queryToForm(savedQuery(), defaults)
     if (queryString(formToQuery(incoming)) !== queryString(formToQuery(state))) Object.assign(state, incoming)
   }
 )
@@ -376,6 +381,13 @@ onBeforeUnmount(() => {
 
 const progressPercent = computed(() => (genProgress.value.total ? Math.round((genProgress.value.done / genProgress.value.total) * 100) : 0))
 const advancedOpen = ref(false)
+
+const defaultsToSave = computed(() => ({ tz: state.zone, months: state.duration, edition: state.edition, punch: state.punch ? '1' : '0' }))
+function applyDefaults(saved: Options) {
+  // Keep this book's key, label, start and other settings; take the saved length, zone, density and margin.
+  const { end: _end, ...rest } = formToQuery(state)
+  Object.assign(state, queryToForm({ ...rest, ...(saved.months ? {} : { end: _end }), ...saved }, defaults))
+}
 </script>
 
 <template>
@@ -383,7 +395,7 @@ const advancedOpen = ref(false)
     <PageHeader
       title="TOTP Code Book"
       description="Print every 2FA code for a stretch of time as a book. Deliberately the least practical way to back up 2FA, and a real one."
-      :breadcrumb="[{ label: 'Keston Utilities', to: '/' }, { label: 'TOTP Code Book' }]"
+      :breadcrumb="[{ label: 'Keston Utilities', to: '/' }, { label: 'TOTP Tools' }, { label: 'Code book' }]"
       link-component="a"
     />
 
@@ -549,6 +561,10 @@ const advancedOpen = ref(false)
             </p>
           </div>
           <p v-else class="text-sm text-black/70">Enter a valid setup key and the code for right now appears here, with a countdown.</p>
+        </Card>
+
+        <Card title="Your defaults">
+          <DefaultsBar tool="totp-book" :allowed="SAVEABLE" :current="defaultsToSave" @apply="applyDefaults" />
         </Card>
 
         <Card title="Copy this setup">
