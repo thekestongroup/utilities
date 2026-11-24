@@ -74,3 +74,25 @@ describe('groupCode', () => {
     expect(groupCode('07081804')).toBe('0708 1804')
   })
 })
+
+describe('matchOffset', () => {
+  it('finds which step a typed code belongs to', async () => {
+    const { matchOffset } = await import('./totp')
+    const key = await importKey(ascii(KEYS['SHA-1']), 'SHA-1')
+    const now = 1111111111
+    const current = await totp(key, now, 30, 8)
+    const previous = await totp(key, now - 30, 30, 8)
+    const next = await totp(key, now + 30, 30, 8)
+    expect(await matchOffset(key, current, now, 30, 8)).toBe(0)
+    expect(await matchOffset(key, previous, now, 30, 8)).toBe(-1)
+    expect(await matchOffset(key, next, now, 30, 8)).toBe(1)
+    expect(await matchOffset(key, `${current.slice(0, 4)} ${current.slice(4)}`, now, 30, 8)).toBe(0)
+  })
+  it('gives nothing for wrong, short or non-numeric input', async () => {
+    const { matchOffset } = await import('./totp')
+    const key = await importKey(ascii(KEYS['SHA-1']), 'SHA-1')
+    expect(await matchOffset(key, '00000000', 1111111111, 30, 8)).toBeUndefined()
+    expect(await matchOffset(key, '1234', 1111111111, 30, 8)).toBeUndefined()
+    expect(await matchOffset(key, 'abcdefgh', 1111111111, 30, 8)).toBeUndefined()
+  })
+})

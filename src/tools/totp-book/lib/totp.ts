@@ -80,3 +80,18 @@ export async function generateCodes(
   }
   return codes
 }
+
+/**
+ * Compares a code typed in with the codes for a few steps either side of now. Offset 0 means it is
+ * the current code; -1 means it is the previous one (the typed code is a step old, so the
+ * device it came from is a step behind), and +1 that it is the next (the device is a step ahead).
+ */
+export async function matchOffset(key: CryptoKey, typed: string, unixSeconds: number, period: number, digits: number, window = 2): Promise<number | undefined> {
+  const wanted = typed.replace(/\s+/g, '')
+  if (wanted.length !== digits || !/^\d+$/.test(wanted)) return undefined
+  const counter = counterFor(unixSeconds, period)
+  for (const offset of [0, -1, 1, -2, 2].filter((o) => Math.abs(o) <= window)) {
+    if (padCode(await hotp(key, counter + offset, digits), digits) === wanted) return offset
+  }
+  return undefined
+}

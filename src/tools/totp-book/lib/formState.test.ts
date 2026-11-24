@@ -31,3 +31,13 @@ describe('form state in the URL', () => {
     expect(form).toMatchObject({ start: '2027-03-01', zone: 'Europe/London', duration: '1', digits: 6, algorithm: 'SHA-1', period: 30 })
   })
 })
+
+describe('saved defaults', () => {
+  it('uses a saved length when the address has no end date, and a saved time zone, edition and punch', () => {
+    const form = queryToForm({ start: '2027-03-01', months: '6', tz: 'Asia/Tokyo', edition: 'day', punch: '1' }, defaults)
+    expect(form).toMatchObject({ duration: '6', zone: 'Asia/Tokyo', edition: 'day', punch: true })
+  })
+  it('lets an explicit end date beat a saved length', () => {
+    expect(queryToForm({ start: '2027-03-01', end: '2027-04-01', months: '6' }, defaults).duration).toBe('1')
+  })
+})
