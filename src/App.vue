@@ -7,6 +7,9 @@ import { tools } from './tools'
 
 const route = useRoute()
 
+// The footer's name, version and build; the last two are put in at build time (see vite.config.ts).
+const footer = { appName: 'Keston Utilities', version: __APP_VERSION__, build: __APP_BUILD__ || undefined }
+
 const sections = computed(() => [
   {
     items: [{ label: 'All utilities', icon: House, to: '/', active: route.path === '/' }] satisfies SidebarItem[]
@@ -35,6 +38,7 @@ const sections = computed(() => [
     :sections="sections"
     :sign-in="false"
     :sidebar="{ label: 'Keston Utilities' }"
+    :footer="footer"
   >
     <RouterView />
   </AppShell>
