@@ -29,7 +29,7 @@ describe('qrSvg', () => {
   it('is a viewBox of the grid plus a quiet zone of 4 on each side', () => {
     const svg = qrSvg(makeQr('HELLO', 'L'))
     expect(svg).toContain('viewBox="0 0 29 29"')
-    expect(svg).toContain('fill="#fff"')
+    expect(svg).toContain('fill="#ffffff"')
     expect(svg).not.toMatch(/https?:/i.exec(svg.replace('http://www.w3.org/2000/svg', ''))?.[0] ?? '@@@')
   })
   it('draws exactly the dark modules, in runs', () => {

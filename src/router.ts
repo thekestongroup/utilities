@@ -29,7 +29,9 @@ export const router = createRouter({
     { path: '/manual-duplex', redirect: (to) => ({ path: '/pdf', query: { ...to.query, mode: 'duplex' } }) },
     { path: '/:pathMatch(.*)*', redirect: '/' }
   ],
-  scrollBehavior: () => ({ top: 0 })
+  // New page: start at the top (or where Back left you). Same page with different options (the
+  // tools rewrite their address as options change): stay where you are.
+  scrollBehavior: (to, from, saved) => saved ?? (to.path !== from.path ? { top: 0 } : false)
 })
 
 router.afterEach((to) => {
