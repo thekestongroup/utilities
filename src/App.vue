@@ -39,6 +39,7 @@ const sections = computed(() => [
     :sign-in="false"
     :sidebar="{ label: 'Keston Utilities' }"
     :footer="footer"
+    :launcher="{ current: 'utilities' }"
   >
     <RouterView />
   </AppShell>
