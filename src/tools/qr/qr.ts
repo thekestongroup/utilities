@@ -1,5 +1,8 @@
 import qrcode from 'qrcode-generator'
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
+import { DEFAULT_STYLE, hexToRgb, qrPath, type QrStyle } from './qrStyle'
+
+export { qrSvg } from './qrStyle'
 
 // The library writes text as Latin-1 unless told otherwise; QR readers expect UTF-8.
 qrcode.stringToBytes = (text: string) => [...new TextEncoder().encode(text)]
@@ -51,37 +54,23 @@ export function darkRuns(matrix: QrMatrix): [number, number, number][] {
   return runs
 }
 
-/** The code as a scalable SVG: black on white, with the quiet zone QR readers need. */
-export function qrSvg(matrix: QrMatrix, quietZone = 4): string {
-  const total = matrix.size + quietZone * 2
-  const path = darkRuns(matrix)
-    .map(([row, col, length]) => `M${col + quietZone} ${row + quietZone}h${length}v1h-${length}z`)
-    .join('')
-  return (
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${total} ${total}" shape-rendering="crispEdges">` +
-    `<rect width="${total}" height="${total}" fill="#fff"/><path d="${path}" fill="#000"/></svg>`
-  )
-}
-
-/** A4 page with the code at an exact size (millimetres), at the top left, with an optional caption. */
-export async function qrPdf(matrix: QrMatrix, options: { sizeMm: number; caption?: string; quietZone?: number }): Promise<Uint8Array> {
-  const quietZone = options.quietZone ?? 4
+/** A4 page with the code at an exact size (millimetres), at the top left, in the chosen style, with an optional caption. */
+export async function qrPdf(matrix: QrMatrix, options: { sizeMm: number; caption?: string; style?: QrStyle }): Promise<Uint8Array> {
+  const style = options.style ?? DEFAULT_STYLE
   const mm = 72 / 25.4
   const doc = await PDFDocument.create()
   const page = doc.addPage([210 * mm, 297 * mm])
   const side = options.sizeMm * mm
-  const module = side / (matrix.size + quietZone * 2)
+  const module = side / (matrix.size + style.quiet * 2)
   const left = 20 * mm
   const top = 297 * mm - 20 * mm
-  for (const [row, col, length] of darkRuns(matrix)) {
-    page.drawRectangle({
-      x: left + (col + quietZone) * module,
-      y: top - (row + quietZone + 1) * module,
-      width: length * module,
-      height: module,
-      color: rgb(0, 0, 0)
-    })
+  const [r, g, b] = hexToRgb(style.fg)
+  if (style.bg !== 'none') {
+    const [br, bg, bb] = hexToRgb(style.bg)
+    page.drawRectangle({ x: left, y: top - side, width: side, height: side, color: rgb(br, bg, bb) })
   }
+  // The path is in module units with y pointing down, as in the SVG, so it is drawn from the top left.
+  page.drawSvgPath(qrPath(matrix, style), { x: left, y: top, scale: module, color: rgb(r, g, b), borderWidth: 0 })
   if (options.caption) {
     const font = await doc.embedFont(StandardFonts.Helvetica)
     page.drawText(options.caption.slice(0, 200).replace(/[^\x20-\x7e]/g, '?'), { x: left, y: top - side - 14, size: 11, font, color: rgb(0, 0, 0) })
