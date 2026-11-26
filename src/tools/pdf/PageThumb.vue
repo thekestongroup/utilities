@@ -53,7 +53,7 @@ watch(() => [props.thumbs, props.index], () => {
 </script>
 
 <template>
-  <div ref="host" class="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded bg-surface">
+  <div ref="host" class="relative flex aspect-square w-full items-center justify-center overflow-hidden rounded bg-surface-muted">
     <canvas
       v-show="!blank && state === 'drawn'"
       ref="canvas"
@@ -67,6 +67,6 @@ watch(() => [props.thumbs, props.index], () => {
     >
       Blank
     </div>
-    <p v-else-if="state !== 'drawn'" class="absolute text-xs text-black/60">{{ state === 'failed' ? 'No preview' : '…' }}</p>
+    <p v-else-if="state !== 'drawn'" class="absolute text-xs text-ink/60">{{ state === 'failed' ? 'No preview' : '…' }}</p>
   </div>
 </template>

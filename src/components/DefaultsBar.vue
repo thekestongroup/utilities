@@ -50,9 +50,9 @@ const label = computed(() => (saved.value ? 'Update my defaults' : 'Save these o
         Use my saved defaults
       </Button>
       <Button v-if="saved" size="sm" variant="ghost" @click="clear">Clear saved defaults</Button>
-      <span aria-live="polite" class="text-black/70">{{ message }}</span>
+      <span aria-live="polite" class="text-ink/70">{{ message }}</span>
     </div>
-    <p class="text-xs text-black/60">
+    <p class="text-xs text-ink/60">
       Kept in a cookie in this browser. Cookies are sent with page requests, so only these harmless options are saved: never a setup key, a password or a file.
     </p>
   </div>

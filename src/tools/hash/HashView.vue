@@ -122,14 +122,14 @@ const savedKeys = Object.keys(builtIn)
         <div
           v-else
           class="flex flex-col items-center gap-3 rounded-md border-2 border-dashed p-8 text-center transition"
-          :class="dragging ? 'border-primary bg-primary/5' : 'border-black/25'"
+          :class="dragging ? 'border-primary bg-primary/5' : 'border-ink/25'"
           @dragover.prevent="dragging = true"
           @dragleave="dragging = false"
           @drop.prevent="onDrop"
         >
-          <FileUp class="size-8 text-primary" aria-hidden="true" />
-          <p v-if="file" class="font-bold" data-testid="file-info">{{ file.name }} <span class="font-normal text-black/70">· {{ file.size.toLocaleString('en-GB') }} bytes</span></p>
-          <p v-else class="text-sm text-black/70">Drop a file here, or choose one.</p>
+          <FileUp class="size-8 text-primary-fg" aria-hidden="true" />
+          <p v-if="file" class="font-bold" data-testid="file-info">{{ file.name }} <span class="font-normal text-ink/70">· {{ file.size.toLocaleString('en-GB') }} bytes</span></p>
+          <p v-else class="text-sm text-ink/70">Drop a file here, or choose one.</p>
           <input ref="fileInput" type="file" class="sr-only" tabindex="-1" aria-hidden="true" @change="onPick" />
           <Button @click="fileInput?.click()">{{ file ? 'Choose a different file' : 'Choose a file' }}</Button>
         </div>
@@ -140,12 +140,12 @@ const savedKeys = Object.keys(builtIn)
       <div class="flex flex-col gap-4">
         <Progress v-if="working && state.mode === 'file'" :value="Math.round(progress * 100)" label="Reading the file" />
         <Notification v-if="error" type="error" title="Could not hash this" :description="error" @dismiss="error = ''" />
-        <p v-if="!rows.length && !working && !error" class="text-sm text-black/70">Add some text or a file and the checksums appear here.</p>
+        <p v-if="!rows.length && !working && !error" class="text-sm text-ink/70">Add some text or a file and the checksums appear here.</p>
         <ul class="flex flex-col gap-3" data-testid="hashes">
           <li v-for="row in rows" :key="row.id" class="flex flex-col gap-1">
-            <p class="text-sm font-bold">{{ row.name }} <span v-if="row.note" class="font-normal text-black/60">· {{ row.note }}</span></p>
+            <p class="text-sm font-bold">{{ row.name }} <span v-if="row.note" class="font-normal text-ink/60">· {{ row.note }}</span></p>
             <div class="flex items-center gap-2">
-              <code class="min-w-0 flex-1 break-all rounded border border-black/15 bg-surface px-3 py-2 font-mono text-sm" :data-testid="`hash-${row.id}`">{{ shown(results[row.id]!) }}</code>
+              <code class="min-w-0 flex-1 break-all rounded border border-ink/10 bg-surface-muted px-3 py-2 font-mono text-sm" :data-testid="`hash-${row.id}`">{{ shown(results[row.id]!) }}</code>
               <Button square :aria-label="`Copy ${row.name}`" :status="copied === row.id ? 'success' : 'idle'" success-text="Copied" @click="copy(row.id)">
                 <Copy aria-hidden="true" />
               </Button>

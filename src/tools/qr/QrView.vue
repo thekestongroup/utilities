@@ -175,7 +175,7 @@ const saveCurrent = computed(() => serializeOptions(state))
                     v-for="preset in darkPresets"
                     :key="preset.hex"
                     type="button"
-                    class="size-7 rounded-full border border-black/25 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+                    class="size-7 rounded-full border border-ink/25 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
                     :class="state.fg === preset.hex ? 'ring-2 ring-primary ring-offset-2' : ''"
                     :style="{ backgroundColor: preset.hex }"
                     :aria-label="preset.name"
@@ -191,7 +191,7 @@ const saveCurrent = computed(() => serializeOptions(state))
                     v-for="preset in lightPresets"
                     :key="preset.hex"
                     type="button"
-                    class="size-7 rounded-full border border-black/25 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+                    class="size-7 rounded-full border border-ink/25 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
                     :class="state.bg === preset.hex ? 'ring-2 ring-primary ring-offset-2' : ''"
                     :style="{ backgroundColor: preset.hex }"
                     :aria-label="preset.name"
@@ -227,8 +227,8 @@ const saveCurrent = computed(() => serializeOptions(state))
       <Card title="Your code" class="lg:sticky lg:top-18 lg:self-start">
         <div class="flex flex-col gap-4">
           <!-- Built from numbers by qrSvg, not from user text, so it is safe to insert. -->
-          <div v-if="built.svg" class="mx-auto w-full max-w-64 rounded border border-black/15 bg-[#fff] p-2" data-testid="qr" v-html="built.svg"></div>
-          <p v-else-if="!built.error" class="text-sm text-black/70">Add some text and the code appears here.</p>
+          <div v-if="built.svg" class="mx-auto w-full max-w-64 rounded border border-ink/10 bg-[#fff] p-2" data-testid="qr" v-html="built.svg"></div>
+          <p v-else-if="!built.error" class="text-sm text-ink/70">Add some text and the code appears here.</p>
           <Notification v-if="built.error" type="warning" title="Can't make this code" :description="built.error" :dismissible="false" />
           <Notification v-if="printFailed" type="warning" title="Couldn't open the print dialog" description="Download the PDF and print that instead." @dismiss="printFailed = false" />
           <div v-if="built.svg" class="flex flex-col gap-2">

@@ -447,7 +447,7 @@ function applyDefaults(saved: Options) {
               <Select v-model="startYear" label="Year" :options="yearOptions" />
             </div>
             <Select v-model="state.duration" label="Length" :options="durationOptions" />
-            <p class="-mt-2 text-sm text-black/70 sm:col-span-2">Books start at 00:00 on the 1st of the month.</p>
+            <p class="-mt-2 text-sm text-ink/70 sm:col-span-2">Books start at 00:00 on the 1st of the month.</p>
             <Select
               v-model="state.zone"
               class="sm:col-span-2"
@@ -465,7 +465,7 @@ function applyDefaults(saved: Options) {
               class="cursor-pointer rounded px-2 py-1 text-sm font-bold outline-none focus-visible:outline-2 focus-visible:outline-focus"
             >
               Advanced
-              <span class="font-normal text-black/70">· algorithm, digits, period, page density</span>
+              <span class="font-normal text-ink/70">· algorithm, digits, period, page density</span>
             </summary>
             <div class="mt-4 grid gap-4 px-2 pb-2 sm:grid-cols-2">
               <Select v-model="state.algorithm" label="Algorithm" :options="algorithmOptions" />
@@ -484,7 +484,7 @@ function applyDefaults(saved: Options) {
         <Card title="Generate">
           <div class="flex flex-col gap-4">
             <p v-if="summary" class="text-base font-bold" data-testid="summary">{{ summary }}</p>
-            <p v-else class="text-sm text-red">Fix the dates above to see how big the book will be.</p>
+            <p v-else class="text-sm text-red-fg">Fix the dates above to see how big the book will be.</p>
             <div v-if="working" class="flex flex-col gap-2" aria-live="polite">
               <Progress :value="progressPercent" label="Generating codes" />
               <p class="flex items-center gap-2 text-sm">
@@ -513,7 +513,7 @@ function applyDefaults(saved: Options) {
           <div class="flex flex-wrap items-center justify-between gap-3" data-testid="book">
             <div>
               <p class="font-bold">{{ formatDate(result.plan.volumes[0]!.startDate) }} – {{ formatDate(result.plan.volumes[0]!.endDate) }}</p>
-              <p class="text-sm text-black/70">
+              <p class="text-sm text-ink/70">
                 {{ NUMBER.format(result.plan.totalCodes) }} codes · {{ NUMBER.format(result.plan.totalPages + 2) }} pages
               </p>
             </div>
@@ -528,7 +528,7 @@ function applyDefaults(saved: Options) {
               </Button>
             </div>
           </div>
-          <div v-if="previewing !== null" class="mt-4 overflow-x-auto rounded border border-black/15 bg-surface p-3">
+          <div v-if="previewing !== null" class="mt-4 overflow-x-auto rounded border border-ink/10 bg-surface-muted p-3">
             <PrintBook
               preview
               :preview-pages="1"
@@ -538,7 +538,7 @@ function applyDefaults(saved: Options) {
               :generated="result.generated"
             />
           </div>
-          <p class="mt-4 text-sm text-black/70">
+          <p class="mt-4 text-sm text-ink/70">
             In the print dialog, choose "Save as PDF" or a printer, set margins to "None" and untick "Headers and footers".
             Pages are already numbered.
           </p>
@@ -550,7 +550,7 @@ function applyDefaults(saved: Options) {
           <div v-if="liveKey && liveCode" class="flex flex-col gap-3" aria-live="off">
             <p class="font-mono text-4xl font-bold tracking-wider [font-feature-settings:'zero']" data-testid="live-code">{{ liveCode }}</p>
             <Progress :value="state.period - secondsLeft" :max="state.period" label="Time until this code changes" />
-            <p class="text-sm text-black/70">Changes in {{ secondsLeft }} {{ secondsLeft === 1 ? 'second' : 'seconds' }}.</p>
+            <p class="text-sm text-ink/70">Changes in {{ secondsLeft }} {{ secondsLeft === 1 ? 'second' : 'seconds' }}.</p>
             <p class="text-sm">
               This should match your authenticator app right now. If it doesn't, the key is wrong, or this device's
               clock is off. Check that before printing.
@@ -560,7 +560,7 @@ function applyDefaults(saved: Options) {
               />
             </p>
           </div>
-          <p v-else class="text-sm text-black/70">Enter a valid setup key and the code for right now appears here, with a countdown.</p>
+          <p v-else class="text-sm text-ink/70">Enter a valid setup key and the code for right now appears here, with a countdown.</p>
         </Card>
 
         <Card title="Your defaults">
@@ -569,7 +569,7 @@ function applyDefaults(saved: Options) {
 
         <Card title="Copy this setup">
           <div class="flex flex-col gap-3">
-            <p class="text-sm text-black/70">
+            <p class="text-sm text-ink/70">
               The address of this page holds your settings. Save or bookmark it to come back to this account, then use
               "Next period" for the following month.
             </p>

@@ -8,24 +8,13 @@
 }
 
 /*
- * Dark mode. Keston UI doesn't ship one yet, so these are the same tokens with
- * dark values (a candidate for the library). `screen` keeps the book white
- * when it is printed.
+ * Dark mode comes from Keston UI: index.html sets data-theme="system", so the
+ * app follows the device setting. Printing is always light, so the book and
+ * any other printout come out black on white.
  */
-@media screen and (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --color-white: #1d1f21;
-    --color-black: #ececec;
-    --color-background: #111213;
-    --color-surface: #17181a;
-    --color-surface-elevated: #232527;
-    --color-primary: #8fd0f2;
-    --color-green: #4fcf6a;
-    --color-yellow: #f1c70b;
-    --color-red: #ff6b83;
-    --color-blue: #6bb8ef;
-    --color-focus: #4db3ff;
+@media print {
+  html[data-theme] {
+    color-scheme: light;
   }
 }
 

@@ -127,7 +127,7 @@ const sheets = computed(() => result.value?.sheets ?? 0)
         <div class="flex flex-col gap-4">
           <p v-if="info" class="text-sm" data-testid="file-info">
             <strong>{{ name }}</strong>
-            <span class="text-black/70"> · {{ NUMBER.format(info.pages) }} {{ info.pages === 1 ? 'page' : 'pages' }} · {{ info.landscape ? 'landscape' : 'portrait' }}</span>
+            <span class="text-ink/70"> · {{ NUMBER.format(info.pages) }} {{ info.pages === 1 ? 'page' : 'pages' }} · {{ info.landscape ? 'landscape' : 'portrait' }}</span>
           </p>
           <CardSelect v-if="!fixedEdge" v-model="s.edge" label="Flip on" hide-label :options="edgeOptions" :columns="2" />
           <details class="rounded px-1">
@@ -197,7 +197,7 @@ const sheets = computed(() => result.value?.sheets ?? 0)
                 Download PDF
               </Button>
             </div>
-            <p class="text-sm text-black/70">{{ frontName }}</p>
+            <p class="text-sm text-ink/70">{{ frontName }}</p>
             <Notification
               v-if="printFailed"
               type="warning"
@@ -291,7 +291,7 @@ const sheets = computed(() => result.value?.sheets ?? 0)
                 Download PDF
               </Button>
             </div>
-            <p class="text-sm text-black/70">{{ backName }}</p>
+            <p class="text-sm text-ink/70">{{ backName }}</p>
             <Notification
               v-if="printFailed"
               type="warning"
@@ -333,7 +333,7 @@ const sheets = computed(() => result.value?.sheets ?? 0)
               The backs are in the wrong order
             </Button>
           </div>
-          <p class="text-sm text-black/70">
+          <p class="text-sm text-ink/70">
             Either one remakes PDF 2 and takes you back to the first print run, to start again on fresh paper. Printers pick the stack up in different ways, so this only needs sorting
             out once: you can save the fix with "Save these options as my defaults" in the editor.
           </p>
