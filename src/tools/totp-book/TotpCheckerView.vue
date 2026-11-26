@@ -163,7 +163,7 @@ const bookQuery = computed(() => {
         />
         <Notification v-if="notice" type="success" title="Link read" :description="notice" @dismiss="notice = ''" />
         <details class="rounded px-1">
-          <summary class="cursor-pointer rounded px-1 py-1 text-sm font-bold outline-none focus-visible:outline-2 focus-visible:outline-focus">Advanced <span class="font-normal text-black/70">· algorithm, digits, period</span></summary>
+          <summary class="cursor-pointer rounded px-1 py-1 text-sm font-bold outline-none focus-visible:outline-2 focus-visible:outline-focus">Advanced <span class="font-normal text-ink/70">· algorithm, digits, period</span></summary>
           <div class="mt-4 grid gap-4 px-1 pb-1 sm:grid-cols-3">
             <Select v-model="state.algo" label="Algorithm" :options="algorithmOptions" />
             <Select v-model="state.digits" label="Digits" :options="digitOptions" />
@@ -177,11 +177,11 @@ const bookQuery = computed(() => {
       <div v-if="codes" class="flex flex-col gap-4">
         <p class="font-mono text-5xl font-bold tracking-wider [font-feature-settings:'zero']" data-testid="current-code">{{ codes.current }}</p>
         <Progress :value="period - secondsLeft" :max="period" label="Time until this code changes" />
-        <p class="text-sm text-black/70">
+        <p class="text-sm text-ink/70">
           Changes in {{ secondsLeft }} {{ secondsLeft === 1 ? 'second' : 'seconds' }}. Before it: <span class="font-mono">{{ codes.previous }}</span> · after it: <span class="font-mono">{{ codes.next }}</span>
         </p>
       </div>
-      <p v-else class="text-sm text-black/70">Enter a valid setup key and its code appears here, with a countdown.</p>
+      <p v-else class="text-sm text-ink/70">Enter a valid setup key and its code appears here, with a countdown.</p>
     </Card>
 
     <Card v-if="codes" title="Compare with your app" description="Type the code your authenticator app shows now.">

@@ -109,13 +109,13 @@ const savedKeys = Object.keys(builtIn)
       <div class="flex flex-col gap-4">
         <ul class="flex flex-col gap-2" data-testid="passwords">
           <li v-for="(password, i) in results" :key="i" class="flex items-center gap-2">
-            <code class="min-w-0 flex-1 break-all rounded border border-black/15 bg-surface px-3 py-2 font-mono text-base" data-testid="password">{{ password }}</code>
+            <code class="min-w-0 flex-1 break-all rounded border border-ink/10 bg-surface-muted px-3 py-2 font-mono text-base" data-testid="password">{{ password }}</code>
             <Button square :aria-label="`Copy password ${i + 1}`" :status="copied === i ? 'success' : 'idle'" success-text="Copied" @click="copy(i)">
               <Copy aria-hidden="true" />
             </Button>
           </li>
         </ul>
-        <p v-if="problem" class="text-sm text-red">{{ problem }}</p>
+        <p v-if="problem" class="text-sm text-red-fg">{{ problem }}</p>
         <div v-else class="flex flex-col gap-2">
           <Progress :value="strength.level" :max="4" label="Password strength" />
           <p class="text-sm" data-testid="strength">
@@ -169,7 +169,7 @@ const savedKeys = Object.keys(builtIn)
       <DefaultsBar tool="password" :allowed="savedKeys" :current="saveable" @apply="apply" />
     </Card>
 
-    <p class="text-xs text-black/60">
+    <p class="text-xs text-ink/60">
       Passphrases use the EFF large word list (7,776 words, about 12.9 bits each), © Electronic Frontier Foundation, licensed
       <a class="underline" href="https://creativecommons.org/licenses/by/3.0/us/" rel="noopener noreferrer">CC BY 3.0 US</a>.
     </p>

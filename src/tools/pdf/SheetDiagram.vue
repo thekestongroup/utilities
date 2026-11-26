@@ -28,7 +28,7 @@ const right = computed(() => sheet(280, props.top))
 </script>
 
 <template>
-  <svg viewBox="0 0 360 160" role="img" class="h-auto w-full max-w-md text-black" aria-label="The stack before and after turning it over sideways, left to right">
+  <svg viewBox="0 0 360 160" role="img" class="h-auto w-full max-w-md text-ink" aria-label="The stack before and after turning it over sideways, left to right">
     <defs>
       <marker id="sd-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M0 0 L10 5 L0 10 z" class="fill-primary" />

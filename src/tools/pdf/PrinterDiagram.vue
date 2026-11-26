@@ -8,7 +8,7 @@ defineProps<{ focus: 'output' | 'rear' | 'both'; farEdge?: 'up' | 'down' }>()
 </script>
 
 <template>
-  <svg viewBox="0 0 360 180" role="img" class="h-auto w-full max-w-md text-black" aria-label="Side view of the printer: paper holder at the back, output tray at the front">
+  <svg viewBox="0 0 360 180" role="img" class="h-auto w-full max-w-md text-ink" aria-label="Side view of the printer: paper holder at the back, output tray at the front">
     <defs>
       <marker id="pd-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M0 0 L10 5 L0 10 z" class="fill-primary" />
@@ -17,7 +17,7 @@ defineProps<{ focus: 'output' | 'rear' | 'both'; farEdge?: 'up' | 'down' }>()
 
     <!-- body -->
     <rect x="70" y="84" width="220" height="62" rx="8" class="fill-surface stroke-current" stroke-width="2" />
-    <rect x="96" y="100" width="70" height="8" rx="2" class="fill-black/15" />
+    <rect x="96" y="100" width="70" height="8" rx="2" class="fill-ink/15" />
 
     <!-- rear paper holder: a slanted tray at the back -->
     <g transform="rotate(-18 92 84)">

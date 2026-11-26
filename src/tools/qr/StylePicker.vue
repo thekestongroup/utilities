@@ -17,7 +17,7 @@ const name = useId()
       <label
         v-for="option in options"
         :key="option.value"
-        class="flex cursor-pointer flex-col items-center gap-1 rounded-md border border-black/15 bg-white p-2 text-xs transition has-checked:border-primary has-checked:bg-primary/5 has-checked:font-bold has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus"
+        class="flex cursor-pointer flex-col items-center gap-1 rounded-md border border-ink/10 bg-surface p-2 text-xs transition has-checked:border-primary has-checked:bg-primary/5 has-checked:font-bold has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus"
       >
         <input v-model="model" type="radio" class="sr-only" :name="name" :value="option.value" />
         <span class="block size-14 rounded bg-white p-1 [&>svg]:size-full" aria-hidden="true" v-html="option.svg"></span>

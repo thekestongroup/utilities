@@ -104,13 +104,13 @@ const savedKeys = Object.keys(builtIn)
     <Card title="Choose files">
       <div
         class="flex flex-col items-center gap-3 rounded-md border-2 border-dashed p-8 text-center transition"
-        :class="dragging ? 'border-primary bg-primary/5' : 'border-black/25'"
+        :class="dragging ? 'border-primary bg-primary/5' : 'border-ink/25'"
         @dragover.prevent="dragging = true"
         @dragleave="dragging = false"
         @drop.prevent="onDrop"
       >
-        <FileUp class="size-8 text-primary" aria-hidden="true" />
-        <p class="text-sm text-black/70">Drop JPEG, PNG, WebP or PDF files here, or choose them.</p>
+        <FileUp class="size-8 text-primary-fg" aria-hidden="true" />
+        <p class="text-sm text-ink/70">Drop JPEG, PNG, WebP or PDF files here, or choose them.</p>
         <input ref="fileInput" type="file" multiple accept="image/jpeg,image/png,image/webp,application/pdf,.jpg,.jpeg,.png,.webp,.pdf" class="sr-only" tabindex="-1" aria-hidden="true" @change="onPick" />
         <Button :disabled="busy" @click="fileInput?.click()">
           <Spinner v-if="busy" size="sm" />
@@ -120,10 +120,10 @@ const savedKeys = Object.keys(builtIn)
     </Card>
 
     <Card v-if="items.length" title="What was found">
-      <ul class="flex flex-col divide-y divide-black/10" data-testid="files">
+      <ul class="flex flex-col divide-y divide-ink/10" data-testid="files">
         <li v-for="item in items" :key="item.id" class="flex flex-col gap-3 py-4 first:pt-0 last:pb-0">
           <div class="flex flex-wrap items-center justify-between gap-2">
-            <p class="min-w-0 break-all font-bold">{{ item.file.name }} <span class="font-normal text-black/70">· {{ size(item.file.size) }}</span></p>
+            <p class="min-w-0 break-all font-bold">{{ item.file.name }} <span class="font-normal text-ink/70">· {{ size(item.file.size) }}</span></p>
             <div class="flex items-center gap-2">
               <Badge v-if="item.cleaned" color="green">Cleaned</Badge>
               <Button v-if="item.cleaned" size="sm" variant="primary" @click="download(item)">
@@ -133,13 +133,13 @@ const savedKeys = Object.keys(builtIn)
               <Button size="sm" variant="ghost" @click="remove(item.id)">Remove</Button>
             </div>
           </div>
-          <p v-if="item.error" class="text-sm text-red">{{ item.error }}</p>
-          <p v-else-if="!item.findings.length" class="text-sm text-black/70" data-testid="nothing">No personal details found{{ item.kind === 'pdf' ? ' in the document information' : '' }}.</p>
+          <p v-if="item.error" class="text-sm text-red-fg">{{ item.error }}</p>
+          <p v-else-if="!item.findings.length" class="text-sm text-ink/70" data-testid="nothing">No personal details found{{ item.kind === 'pdf' ? ' in the document information' : '' }}.</p>
           <div v-else class="flex flex-col gap-2" data-testid="findings">
             <div v-for="[risk, list] in byRisk(item.findings)" :key="risk">
-              <p class="text-xs font-bold uppercase tracking-wide text-black/60">{{ RISK_LABEL[risk] }}</p>
+              <p class="text-xs font-bold uppercase tracking-wide text-ink/60">{{ RISK_LABEL[risk] }}</p>
               <ul class="text-sm">
-                <li v-for="finding in list" :key="finding.label + finding.value"><span class="text-black/70">{{ finding.label }}:</span> {{ finding.value }}</li>
+                <li v-for="finding in list" :key="finding.label + finding.value"><span class="text-ink/70">{{ finding.label }}:</span> {{ finding.value }}</li>
               </ul>
             </div>
           </div>

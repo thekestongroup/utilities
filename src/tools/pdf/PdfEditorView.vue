@@ -256,13 +256,13 @@ const savedKeys = Object.keys(builtIn)
           <div
             v-if="!items.length"
             class="flex flex-col items-center gap-3 rounded-md border-2 border-dashed p-10 text-center transition"
-            :class="dragging ? 'border-primary bg-primary/5' : 'border-black/25'"
+            :class="dragging ? 'border-primary bg-primary/5' : 'border-ink/25'"
             @dragover.prevent="dragging = true"
             @dragleave="dragging = false"
             @drop.prevent="onDrop"
           >
-            <FileUp class="size-8 text-primary" aria-hidden="true" />
-            <p class="text-sm text-black/70">Drop one or more PDFs here, or choose them. Add more later to merge.</p>
+            <FileUp class="size-8 text-primary-fg" aria-hidden="true" />
+            <p class="text-sm text-ink/70">Drop one or more PDFs here, or choose them. Add more later to merge.</p>
             <Button variant="primary" :disabled="busy" @click="fileInput?.click()">
               <Spinner v-if="busy" size="sm" />
               Choose PDFs
@@ -282,8 +282,8 @@ const savedKeys = Object.keys(builtIn)
                 v-for="(item, i) in items"
                 :key="item.id"
                 draggable="true"
-                class="flex flex-col gap-1 rounded-md border bg-white p-2 transition"
-                :class="dragOver === i && dragFrom !== i ? 'border-primary' : 'border-black/15'"
+                class="flex flex-col gap-1 rounded-md border bg-surface p-2 transition"
+                :class="dragOver === i && dragFrom !== i ? 'border-primary' : 'border-ink/10'"
                 :aria-label="label(item, i)"
                 @dragstart="onDragStart(i, $event)"
                 @dragover.prevent="dragOver = i"
